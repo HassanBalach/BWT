@@ -1,0 +1,78 @@
+/* styles.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     height: 100%; 
+    margin: 50px 0;
+    background-color: #f26a2e;
+
+    font-family: Arial, sans-serif;
+}
+
+.todo-container {
+    background: white;
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.todo-container input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.todo-container .filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.todo-container .filters span {
+    cursor: pointer;
+    color: #f26a2e;
+    font-weight: bold;
+}
+
+.todo-container .filters span:hover {
+    text-decoration: underline;
+}
+
+.todo-container .clear-all {
+    background: #f26a2e;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#container {
+    /* background: white; */
+ 
+ 
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 85%;
+    margin: auto;
+  }
+ 
+  .divContainer{
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid;
+    margin-top: 15px;
+  }
+
+  label{
+
+    padding-left: 10px;
+  }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tally v2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tally <span class="version">v2</span></h1>
+            <p>Your favorite character counter, with a dark mode!</p>
+        </header>
+        <main>
+            <section class="description">
+                <p>
+                    Tally word counter is a free online tool to count the number of characters, words, and paragraphs in your text. 
+                    Tally can also count the number of digits, spaces, and special characters. Make sure you have the required number 
+                    of words for your essay or article by counting them instantly.
+                </p>
+                <p>
+                    Also, Tally character counter has other themes in the settings, so check them out if you want a different look. 
+                    Please bookmark this page to use Tally whenever you need.
+                </p>
+            </section>
+            <section class="input-area" id="inputTag">
+                <textarea placeholder="The quick brown fox jumps over the lazy dog..."></textarea>
+            </section>
+            <section class="results">
+                <div class="container-2">
+                    <div class="result-item">
+                        <h3>Characters</h3>
+                        <p id="characterCount">0</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Words</h3>
+                        <p id="wordCount">0</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Sentences</h3>
+                        <p id="sentenceCount">0</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Paragraphs</h3>
+                        <p id="paragraphCount">0</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Spaces</h3>
+                        <p id="spaceCount">0</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Letters</h3>
+                        <p id="letterCount">0</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Digits</h3>
+                        <p id="digitCount">0</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Special Characters</h3>
+                        <p id="specialCharCount">0</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

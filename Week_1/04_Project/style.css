@@ -60,44 +60,36 @@ li {
 }
 /* Hero-Section */
 
-#Hero-Section {
+ #Hero-Section {
+  display: grid;
   width: 100%;
   height: 1096px;
   top: 60px;
-  display: flex;
-  flex-wrap: wrap;
   padding: 96px 32px 96px 32px;
   gap: 10px;
-  opacity: 0px;
- background-color: red; 
-
+ 
 }
 .content-Block {
   width: 100%;
   height: 904px;
-  display: flex;
-  flex-wrap: wrap;
   padding: 90px 0px 0px 0px;
   gap: 75px;
-  background-color: yellow;
-}
+ 
+} */
 
-.topContainer {
+ .topContainer {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  
-  background-color: blue;
   height: 448px;
   gap: 0px;
-}
-
- .heading1 {
-  font-size: 11em;
-  font-weight: 400;
-  /* line-height: 223.86px; */
-  text-align: left;
 } 
+
+.heading1 {
+
+  font-size: 80%;
+  font-weight: 400;
+ line-height: 223.86px; 
+  text-align: left;
+}  
 
 
 
@@ -110,14 +102,14 @@ li {
   /* background-color: gray; */
 } */
 
-.subContainer {
+/* .subContainer {
   width: 71.875em; /* 1150px / 16 */
   height: 14em; /* 224px / 16 */
   display: flex;
   justify-content: space-between;
   align-items: center;
   /* background-color: gray; */
-}
+} */
 
 /* .Designer {
   display: inline-block;
@@ -128,7 +120,7 @@ li {
   line-height: 223.86px;
   text-align: left;
 } */
-.Designer {
+/* .Designer {
   display: inline-block;
   width: 48.9375em; /* 783px / 16 */
   height: 14em; /* 224px / 16 */
@@ -136,7 +128,7 @@ li {
   font-weight: 400;
   /* line-height: 13.99125em; 223.86px / 16 */
   text-align: left;
-}
+} */
 
 /* .para {
   display: inline-block;
@@ -148,7 +140,7 @@ li {
   text-align: right;
 } */
 
-.para {
+/* .para {
   display: inline-block;
   width: 20.125em; /* 322px / 16 */
   height: 5.125em; /* 82px / 16 */
@@ -237,7 +229,7 @@ li {
 
   height: 10px;
   background: #ffffff;
-}
+} */
 
 /* Welcome to help-section */
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            background-color: aqua;
+        
+        }
+        .header{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            
+        }
+        .logo{
+            justify-content: start;
+        }
+        nav{
+            justify-content: end;
+            display: flex; 
+        }
+        nav li{
+            display:  inline;
+            padding: 0 10px;
+           
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="header">
+            <div class="logo">LOGO</div>
+            <nav>
+                <li>Home</li>
+                <li>About</li>
+                <li>Contact</li>
+                <li>Info</li>
+                <li>Bio</li>
+            </nav>
+        </section>
+    </div>
+</body>
+</html>

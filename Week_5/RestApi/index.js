@@ -1,14 +1,20 @@
+
 import express from "express";
 import user from "./MOCK_DATA.json" assert { type: "json" };
 import fs from "fs/promises"; // Import promises API from fs
 
+
+
+
+
 const app = express(); // Initialize the express app
 const port = 4000;
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("/api/user", (_, res) => {
+app.get("/api/user", (req, res) => {
   res.json(user);
 });
 

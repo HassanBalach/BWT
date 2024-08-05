@@ -17,7 +17,7 @@ const SearchFeed = () => {
 
     fetchFromApi(`search?part=snippet&q=${searchTerm}`)
       .then((data)=>{
-        console.log(data);
+        console.log("Search Data",data);
         setVideos(data.items)})
     
 

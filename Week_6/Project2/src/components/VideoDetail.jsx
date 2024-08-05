@@ -18,12 +18,21 @@ useEffect(()=>{
     return;
   }
   console.log("Fetching videos for ID:", id);
-  
+
   fetchFromApi(`videos?part=snippet,statistics&id=${id}`)
-    .then((data)=>{
-      console.log("setVideoDetail", videoDetail)
-      setVideoDetail(data.items[0])
-    })
+  .then((data) => {
+    if (data.items && data.items.length > 0) {
+      console.log("Video Details:", data.items[0]);
+      setVideoDetail(data.items[0]);
+    } else {
+      console.error("No video data found for the given ID.");
+    }
+  })
+  .catch((error) => {
+    console.error("Error fetching video detail:", error);
+  });
+
+
       
 
   fetchFromApi(`search?part=snippet&relatedToVideoId=${id}&type=video`)
@@ -34,8 +43,6 @@ useEffect(()=>{
 
   
 },[id])
-//  console.log("videoDetail:", videoDetail);
-// console.log("setVideos:", videos);
 
 if(!videoDetail?.snippet) return <Loader />;
 

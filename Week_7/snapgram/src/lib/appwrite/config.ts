@@ -13,8 +13,8 @@ export const appwriteConfig = {
   savedCollectionId: import.meta.env.VITE_APPWRITE_SAVE_COLLECTION_ID,
 };
 
-console.log("appWrite_DB", appwriteConfig.databaseId);
-console.log("appWrite_PC", appwriteConfig.postCollectionId);
+// console.log("appWrite_DB", appwriteConfig.databaseId);
+// console.log("appWrite_PC", appwriteConfig.postCollectionId);
 
 client.setEndpoint(appwriteConfig.Url);
 client.setProject(appwriteConfig.ID); // Replace with your project ID

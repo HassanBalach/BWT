@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { SignInValidation } from "@/lib/validation"
+import {  SignUpValidation } from "@/lib/validation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
@@ -8,7 +8,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from 
 import { Input } from "@/components/ui/input"
 import Loading from "@/components/Shared/Loading"
 
-const { CheckAuthUser, isLoading: isUserLoading } = useUserContext
+// // const { checkAuthUser, isPending: isUserLoading } = useUserContext
+const {checkAuthUser,isPending: isUserLoading } = useUserContext;
+
+
+console.log("useUserContext", useUserContext);
+
 
 
 import { useToast } from "@/components/ui/use-toast"
@@ -27,8 +32,8 @@ const SignUpForm = () => {
   const { mutateAsync: signInTheAccount, isPending: isSigningInUser } = useUserSignInAccountMutation()
 
 
-  const form = useForm<z.infer<typeof SignInValidation>>({
-    resolver: zodResolver(SignInValidation),
+  const form = useForm<z.infer<typeof SignUpValidation>>({
+    resolver: zodResolver(SignUpValidation),
     defaultValues: {
       name: "",
       username: "",
@@ -38,7 +43,7 @@ const SignUpForm = () => {
   })
 
   // 2. Define a submit handler.
-  async function onSubmit(user: z.infer<typeof SignInValidation>) {
+  async function onSubmit(user: z.infer<typeof SignUpValidation>) {
     try {
       console.log("createNewUser:****", createNewUser);
 
@@ -54,12 +59,17 @@ const SignUpForm = () => {
         return newUser;
       }
 
+
       const session = await signInTheAccount({
         email: user.email,
         password: user.password,
       });
 
+
+
       if (!session) {
+        console.log("There is not any avalible session:");
+        
         toast({
           variant: "destructive",
           title: "Sign in failed! Please try later",
@@ -71,7 +81,13 @@ const SignUpForm = () => {
 
       // Check either User is logged in or not  {AUTH VARIFICATION}
 
-      const isLoggedIn = await CheckAuthUser();
+      const isLoggedIn = await checkAuthUser();
+
+        if(!isLoggedIn){
+
+          console.log("isloggedIn", isLoggedIn , "Error accurs");
+        }
+      
 
       if (isLoggedIn) {
         form.reset();
@@ -159,7 +175,7 @@ const SignUpForm = () => {
               </FormItem>
             )}
           />
-          <Button className="shad-button_primary" type="submit">{isCreatingAccount || isSigningInUser ? (
+          <Button className="shad-button_primary" type="submit">{isCreatingAccount || isSigningInUser || isUserLoading ? (
             <div className="flex-center gap-3  ">
               <Loading />  Loading....
 

@@ -1,3 +1,5 @@
+import { Models } from "appwrite";
+
 export interface INewUser{
     name: string;
     username: string;
@@ -24,7 +26,6 @@ export interface signInAccount {
 export interface IUser {
     id: string;
     name: string;
-    password: string;
     username: string;
     email: string;
     imageUrl: string;
@@ -34,8 +35,30 @@ export interface IUser {
   export interface IcontextType {
     user: IUser;
     isLoading: boolean;
-    isAuthenticated: boolean;
     setUser: React.Dispatch<React.SetStateAction<IUser>>;
-    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
+    isAuthenticated: boolean;
+    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
     checkAuthUser: () => Promise<boolean>;
+}
+
+export interface FileUploaderProps {
+  fieldChange: (files:File[])=> void,
+  mediaUrl: string
+}
+
+export interface PostFormProps {
+  post?: Models.Document;
+  action: "Create" | "Update"
+}
+
+
+
+// 📯Post Quriesy 📮📭
+
+export interface INewPost{
+  userId: string,
+  caption: string;
+  file: File[],
+  location?: string,
+  tags?: string,
 }

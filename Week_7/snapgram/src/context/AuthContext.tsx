@@ -1,17 +1,14 @@
 
- import { getCurrentUser } from "@/lib/appwrite/Api";
+
+import { getCurrentUser } from "@/lib/appwrite/Api";
 import { IcontextType, IUser } from "@/Types";
-import  React, { useContext , createContext, useState, useEffect  } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-
-
-
 
 /*
     How initial user looks like ✅
     How initial state of user look like 
-*/ 
+*/
 
 export const INITIAL_USER = {
     id: " ",
@@ -20,69 +17,75 @@ export const INITIAL_USER = {
     username: " ",
     email: " ",
     imageUrl: " ",
-    bio: " ", 
+    bio: " ",
 }
 
-export const INITIAL_STATE = {
+ const INITIAL_STATE = {
 
     user: INITIAL_USER,
-    isLoading: false ,
+    isLoading: false,
     isAuthenticated: false,
-    setUser: ()=> {},
-    setIsAuthenticated: ()=>{},
-    checkAuthUser: async ()=> false as boolean
+    setUser: () => { },
+    setIsAuthenticated: () => { },
+    checkAuthUser: async () => false as boolean,
 
 }
-
 
 const AuthContext = createContext<IcontextType>(INITIAL_STATE)
 
-export const AuthContextProvider = ({children}: {children: React.ReactNode}) => {
-    const [user , setUser] = useState<IUser>(INITIAL_USER)
-    const [isAuthenticated, setIsAuthenticated]= useState(false)
-    const [isLoading, setIsLoading]= useState(false)
+console.log({AuthContext});
+
+
+
+export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate()
-    
-    const checkAuthUser = async ()=>{
+
+    const [user, setUser] = useState<IUser>(INITIAL_USER)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+
+    const checkAuthUser = async () => {
         setIsLoading(true)
         try {
-          const currentAccount =   await getCurrentUser() //💥Need to start the journey from here 
-          console.log("CurrentAccount ", currentAccount);
-          
-          if(currentAccount){
-            setUser({
-                id: currentAccount.$id,
-                name: currentAccount.name,
-                password: currentAccount.password,
-                username:  currentAccount.username,
-                email:  currentAccount.emial,
-                imageUrl:  currentAccount.imageUrl,
-                bio: currentAccount.bio
-            })
-            setIsAuthenticated(true);
-            return true;
+            const currentAccount = await getCurrentUser()
+            console.log("CurrentAccount ", currentAccount);
+
+            if (currentAccount) {
+                setUser({
+                    id: currentAccount.$id,
+                    name: currentAccount.name,
+                    username: currentAccount.username,
+                    email: currentAccount.emial,
+                    imageUrl: currentAccount.imageUrl,
+                    bio: currentAccount.bio
+                })
 
 
-          }
-          return false;
-        } catch (error) {
-            console.error("Error in CheckAuthUser",error);
+                setIsAuthenticated(true);
+                return true;
+
+
+            }
             return false;
-        }finally{
+        } catch (error) {
+            console.error("Error in CheckAuthUser", error);
+            return false;
+        } finally {
             setIsLoading(false)
         }
     }
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         const validAuthToken = localStorage.getItem("cookieFallback")
-        // || validAuthToken === null || validAuthToken === undefined
-        if(validAuthToken === "[]" ){
-            navigate("/sign-in")
-        }
+        // 
+        // if (validAuthToken === "[]" || validAuthToken === null || validAuthToken === undefined) {
+        //     navigate("/sign-in")
+        // }
 
         checkAuthUser();
 
-    },[])
+    }, [])
 
 
     const value = {
@@ -96,12 +99,14 @@ export const AuthContextProvider = ({children}: {children: React.ReactNode}) => 
 
 
 
-    return(
-    <AuthContext.Provider value={value}>
-        {children}
-    </AuthContext.Provider>
-)
-  
+    return (
+        <AuthContext.Provider value={value}>
+            {children}
+        </AuthContext.Provider>
+    )
+
 }
 
-export const useUserContext = ()=> useContext(AuthContext)
+export const useUserContext = () => useContext(AuthContext)
+
+

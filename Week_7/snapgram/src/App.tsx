@@ -2,7 +2,15 @@
 
 import { Route, Routes } from 'react-router-dom'
 import './globles.css'
-import { Home } from './_Root/pages'
+import {  Home,
+  Explore,
+  Saved,
+  CreatePost,
+  Profile,
+  EditPost,
+  PostDetails,
+  UpdateProfile,
+  AllUsers, } from './_Root/pages'
 import RootLayout from './_Root/RootLayout'
 import SignInForm from './_Auth/Form/SignInForm'
 import SignUpForm from './_Auth/Form/SignUpForm'
@@ -28,7 +36,15 @@ const App = () => {
         {/* Private routes */}
 
         <Route element={<RootLayout />}>
-          <Route index element={<Home />} />
+        <Route index element={<Home />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/saved" element={<Saved />} />
+          <Route path="/all-users" element={<AllUsers />} />
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/update-post/:id" element={<EditPost />} />
+          <Route path="/posts/:id" element={<PostDetails />} />
+          <Route path="/profile/:id/*" element={<Profile />} />
+          <Route path="/update-profile/:id" element={<UpdateProfile />} />
         </Route>
 
       </Routes>

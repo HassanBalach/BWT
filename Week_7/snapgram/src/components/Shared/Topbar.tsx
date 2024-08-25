@@ -1,12 +1,23 @@
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../ui/button'
-import { useUserContext } from '@/context/AuthContext'
+import { INITIAL_USER, useUserContext } from '@/context/AuthContext'
+import { useSignOutAccount } from '@/lib/react-query/qreries'
 
 const Topbar = () => {
-    const { user } = useUserContext();
+   
+    const navigate = useNavigate()
+    const { user, setUser, setIsAuthenticated  } = useUserContext();
+    const { mutate: signOut } = useSignOutAccount()
+  
 
-
+    const handleSignOut = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        signOut()
+        setUser(INITIAL_USER)
+        setIsAuthenticated(false)
+        navigate("/sign-in");
+    }
 
 
     return (
@@ -22,7 +33,7 @@ const Topbar = () => {
                 </Link>
 
                 <div className='flex gap-4'>
-                    <Button>
+                    <Button onClick={handleSignOut}>
                         <img
                             src="/assets/icons/logout.svg"
                             alt="logout"
@@ -34,7 +45,6 @@ const Topbar = () => {
                             alt="profile"
                             className='rounded-full h-8 w-8'
                         />
-
                     </Link>
                 </div>
 

@@ -20,7 +20,7 @@ export const INITIAL_USER = {
     bio: " ",
 }
 
- const INITIAL_STATE = {
+const INITIAL_STATE = {
 
     user: INITIAL_USER,
     isLoading: false,
@@ -33,7 +33,7 @@ export const INITIAL_USER = {
 
 const AuthContext = createContext<IcontextType>(INITIAL_STATE)
 
-console.log({AuthContext});
+ console.log({AuthContext});
 
 
 
@@ -49,14 +49,14 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
         setIsLoading(true)
         try {
             const currentAccount = await getCurrentUser()
-            console.log("CurrentAccount ", currentAccount);
+           console.log("CurrentAccount ", currentAccount);
 
             if (currentAccount) {
                 setUser({
                     id: currentAccount.$id,
                     name: currentAccount.name,
                     username: currentAccount.username,
-                    email: currentAccount.emial,
+                    email: currentAccount.email,
                     imageUrl: currentAccount.imageUrl,
                     bio: currentAccount.bio
                 })
@@ -78,10 +78,17 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
 
     useEffect(() => {
         const validAuthToken = localStorage.getItem("cookieFallback")
-        // 
-        // if (validAuthToken === "[]" || validAuthToken === null || validAuthToken === undefined) {
-        //     navigate("/sign-in")
-        // }
+       
+        console.log({validAuthToken});
+
+        
+        if (
+            validAuthToken === "[]" ||
+            validAuthToken === null ||
+            validAuthToken === undefined
+        ) {
+            navigate("/sign-in")
+        }
 
         checkAuthUser();
 

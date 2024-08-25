@@ -1,106 +1,85 @@
-import { z } from "zod"
-import { SignInValidation } from "@/lib/validation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import Loading from "@/components/Shared/Loading"
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const { checkAuthUser, isLoading: isUserLoading } = useUserContext
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-
-console.log("useUserContext", useUserContext);
-
-
-
-import { useToast } from "@/components/ui/use-toast"
-import {  useUserSignInAccountMutation } from "@/lib/react-query/qreries"
-import { useUserContext } from "@/context/AuthContext"
+import { useToast } from "@/components/ui/use-toast";
+import { useUserContext } from "@/context/AuthContext";
+import { SignInValidation } from "@/lib/validation";
+import Loading from "@/components/Shared/Loading";
+import {  useUserSignInAccountMutation } from "@/lib/react-query/qreries";
 
 
 
-
-const SignInForm = () => {
-  const { toast } = useToast()
-  const navigate = useNavigate()
-  //============    Quries    ==============\\
-
-  const { mutateAsync: signInTheAccount, isPending: isSigningInUser } = useUserSignInAccountMutation()
-
+const SignupForm = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
   const form = useForm<z.infer<typeof SignInValidation>>({
     resolver: zodResolver(SignInValidation),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
     },
-  })
+  });
 
-  // 2. Define a submit handler.
-  async function onSubmit(user: z.infer<typeof SignInValidation>) {
+
+  const { mutateAsync: signInAccount } = useUserSignInAccountMutation();
+
+  // Handler
+  const handleSignup = async (user: z.infer<typeof SignInValidation>) => {
     try {
+  
 
-
-    
-      const session = await signInTheAccount({
+      const session = await signInAccount({
         email: user.email,
         password: user.password,
       });
-
+      console.log({session});
+      
       if (!session) {
-        toast({
-          variant: "destructive",
-          title: "Sign in failed! Please try later",
-        })
-        navigate("/sign-in")
-
+        toast({ title: "Something went wrong. Please login your new account", });
         return;
       }
 
-      // Check either User is logged in or not  {AUTH VARIFICATION}
-
       const isLoggedIn = await checkAuthUser();
-
-        if(!isLoggedIn){
-
-          console.log("isloggedIn", isLoggedIn , "Error accurs");
-        }
+      console.log({isLoggedIn});
       
 
       if (isLoggedIn) {
         form.reset();
-        navigate("/")
 
+        navigate("/");
       } else {
-        toast({
-          variant: "destructive",
-          title: "Sign in failed! Please try later",
-        })
+        toast({ title: "Login failed. Please try again.", });
 
         return;
-
       }
     } catch (error) {
       console.log({ error });
     }
-
-
-
-  }
-
+  };
 
   return (
-    <div className="sm:w-420 flex-center flex-col">
-      <img src="assets/images/logo.svg" alt="Logo" />
-      <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">    Log in to your account</h2>
-      <p className="text-light-3 small-medium md:base-regular mt-2">
-        Welcome to snapgram 
-      </p>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-5 w-full mt-4  ">
+    <Form {...form}>
+      <div className="sm:w-420 flex-center flex-col">
+        <img src="/assets/images/logo.svg" alt="logo" />
+
+        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
+          Create a new account
+        </h2>
+        <p className="text-light-3 small-medium md:base-regular mt-2">
+          To use snapgram, Please enter your details
+        </p>
+
+        <form
+          onSubmit={form.handleSubmit(handleSignup)}
+          className="flex flex-col gap-5 w-full mt-4">
          
           <FormField
             control={form.control}
@@ -109,12 +88,13 @@ const SignInForm = () => {
               <FormItem>
                 <FormLabel className="shad-form_label">Email</FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input"  {...field} />
+                  <Input type="text" className="shad-input" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="password"
@@ -122,36 +102,35 @@ const SignInForm = () => {
               <FormItem>
                 <FormLabel className="shad-form_label">Password</FormLabel>
                 <FormControl>
-                  <Input type="password" className="shad-input"  {...field} />
+                  <Input type="password" className="shad-input" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button className="shad-button_primary" type="submit">{ isSigningInUser || isUserLoading ? (
-            <div className="flex-center gap-3  ">
-              <Loading />  Loading....
 
-            </div>
-          ) : (
-            "Sing In"
-          )}</Button>
+          <Button type="submit" className="shad-button_primary">
+            {  isUserLoading ? (
+              <div className="flex-center gap-2">
+                <Loading /> Loading...
+              </div>
+            ) : (
+              "Sign Up"
+            )}
+          </Button>
 
           <p className="text-small-regular text-light-2 text-center mt-2">
-           Don't have an account
+          Don&apos;t have an account?
             <Link
               to="/sign-up"
-              className="text-primary-500 text-small-semibold ml-1"
-
-            > Sing up </Link>
+              className="text-primary-500 text-small-semibold ml-1">
+            Sign up
+            </Link>
           </p>
-
-
         </form>
-      </Form>
-    </div>
-  )
-}
+      </div>
+    </Form>
+  );
+};
 
-
-export default SignInForm
+export default SignupForm;

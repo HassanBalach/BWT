@@ -8,8 +8,8 @@ const RootLayout = () => {
     <div className="w-full md:flex">
   
 
-      <Topbar />    {/* ⭕Need to fixed something after handling session */}
-      <LeftSidebar />      {/* ⭕Need to fixed something after handling session  */}
+      <Topbar />   
+      <LeftSidebar />      
    
       <section className="flex flex-1 h-full">
         <Outlet />

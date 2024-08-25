@@ -17,7 +17,7 @@ import FileUploader from "./Shared/FileUploader"
 import { PostFormProps } from "@/Types"
 import { PostValidation } from "@/lib/validation"
 import { useUserContext } from "@/context/AuthContext"
-import { useCreatePostMutation } from "@/lib/react-query/qreries"
+import { useCreatePostMutation, useUpdatePost } from "@/lib/react-query/qreries"
 import { toast } from "./ui/use-toast"
 import { useNavigate } from "react-router-dom"
 import Loading from "./Shared/Loading"
@@ -30,7 +30,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
 
 
     const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePostMutation();
-
+    const { mutateAsync: updatePost, isPending: isLoadingUpdate } = useUpdatePost();
 
     const form = useForm<z.infer<typeof PostValidation>>({
         resolver: zodResolver(PostValidation),
@@ -45,28 +45,46 @@ const PostForm = ({ post, action }: PostFormProps) => {
 
     // 2. Define a submit handler.
     const handlePostSubmition = async (values: z.infer<typeof PostValidation>) => {
-        try {
-            const newPost =  await createPost({
-                    ...values,
-                    userId: user.id,
-                });
-                
-            if (!newPost) {
-                toast({
-                  title: `Post submission failed. Please try again.`,
-                });
-              } else {
-                navigate("/");
-              }
-        } catch (error) {
-            toast({
-                title: `${action} post failed. Please try again.`,
+        let updateSuccessful = false;
+    
+        if (post && action === "Update") {
+            const updatedPost = await updatePost({
+                ...values,
+                postId: post.$id,
+                imageId: post.imageId,
+                imageUrl: post.imageUrl,
             });
+    
+            if (updatedPost) {
+                updateSuccessful = true;
+                navigate(`/posts/${post.$id}`);
+                toast({
+                    title: `Post updated successfully.`,
+                });
+                return;
+            }
         }
     
-        console.log({ values });
+        if (!updateSuccessful) {
+            // If it's not an update, create a new post
+            const newPost = await createPost({
+                ...values,
+                userId: user.id,
+            });
+    
+            if (newPost) {
+                navigate(`/`);
+                toast({
+                    title: `Post created successfully.`,
+                });
+            } else {
+                toast({
+                    title: `Post submission failed. Please try again.`,
+                });
+            }
+        }
     };
-
+    
 
     return (
 
@@ -81,7 +99,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
                         <FormItem>
                             <FormLabel className="shad-form_label">Caption</FormLabel>
                             <FormControl>
-                                <Textarea className="shad-textarea custom-scrollbar" {...field} />    
+                                <Textarea className="shad-textarea custom-scrollbar" {...field} />
                             </FormControl>
 
                             <FormMessage className="shad-form message" />
@@ -137,8 +155,8 @@ const PostForm = ({ post, action }: PostFormProps) => {
                                     placeholder="Art, Expression, Learn"
                                     className="shad-input "
                                     {...field}
-                                    />
-                                  
+                                />
+
                             </FormControl>
 
                             <FormMessage className="shad-form message" />
@@ -147,19 +165,15 @@ const PostForm = ({ post, action }: PostFormProps) => {
                 />
                 <div className="flex gap-4 item-center justify-end ">
 
-                    <Button
-                        className="shad-button_dark_4"
-                        type="button"
-                    >
+                    <Button className="shad-button_dark_4" type="button" >
                         Cancel
                     </Button>
                     <Button
+                        type="submit"
                         className="shad-button_primary whitespace-nowrap"
-                        type="submit">
-                        disabled={isLoadingCreate}
-                        {(isLoadingCreate) && <Loading />}
-                        {action}Post
-
+                        disabled={isLoadingCreate || isLoadingUpdate}>
+                        {(isLoadingCreate || isLoadingUpdate) && <Loading />}
+                        {action} Post
                     </Button>
                 </div>
             </form>

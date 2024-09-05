@@ -11,7 +11,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useUserContext } from "@/context/AuthContext";
 import { SignInValidation } from "@/lib/validation";
 import Loading from "@/components/Shared/Loading";
-import {  useUserSignInAccountMutation } from "@/lib/react-query/qreries";
+import { useUserSignInAccountMutation } from "@/lib/react-query/qreries";
 
 
 
@@ -34,22 +34,22 @@ const SignupForm = () => {
   // Handler
   const handleSignup = async (user: z.infer<typeof SignInValidation>) => {
     try {
-  
+
 
       const session = await signInAccount({
         email: user.email,
         password: user.password,
       });
-      console.log({session});
-      
+      console.log({ session });
+
       if (!session) {
         toast({ title: "Something went wrong. Please login your new account", });
         return;
       }
 
       const isLoggedIn = await checkAuthUser();
-      console.log({isLoggedIn});
-      
+      console.log({ isLoggedIn });
+
 
       if (isLoggedIn) {
         form.reset();
@@ -80,7 +80,7 @@ const SignupForm = () => {
         <form
           onSubmit={form.handleSubmit(handleSignup)}
           className="flex flex-col gap-5 w-full mt-4">
-         
+
           <FormField
             control={form.control}
             name="email"
@@ -110,21 +110,21 @@ const SignupForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {  isUserLoading ? (
+            {isUserLoading ? (
               <div className="flex-center gap-2">
                 <Loading /> Loading...
               </div>
             ) : (
-              "Sign Up"
+              "Sign In"
             )}
           </Button>
 
           <p className="text-small-regular text-light-2 text-center mt-2">
-          Don&apos;t have an account?
+            Don&apos;t have an account?
             <Link
               to="/sign-up"
               className="text-primary-500 text-small-semibold ml-1">
-            Sign up
+              Sign up
             </Link>
           </p>
         </form>

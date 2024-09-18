@@ -1,7 +1,26 @@
-/* eslint-disable jsx-a11y/media-has-caption */
-import React, { useRef, useEffect } from 'react';
 
-const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded, onTimeUpdate, onLoadedData, repeat }) => {
+import React, { useRef, useEffect } from "react";
+import { useGetTrackQuery } from "../../redux/services/spotify.Track.Api";
+
+const Player = ({
+  activeNaat,
+  isPlaying,
+  volume,
+  seekTime,
+  onEnded,
+  onTimeUpdate,
+  onLoadedData,
+  repeat,
+}) => {
+
+
+  const trackId = activeNaat?.data?.id;
+  console.log({trackId});
+  const datas = useGetTrackQuery(trackId);
+  console.log({datas});
+  
+
+
   const ref = useRef(null);
   // eslint-disable-next-line no-unused-expressions
   if (ref.current) {
@@ -22,7 +41,7 @@ const Player = ({ activeSong, isPlaying, volume, seekTime, onEnded, onTimeUpdate
 
   return (
     <audio
-      src={activeSong?.hub?.actions[1]?.uri}
+      src={activeNaat}
       ref={ref}
       loop={repeat}
       onEnded={onEnded}

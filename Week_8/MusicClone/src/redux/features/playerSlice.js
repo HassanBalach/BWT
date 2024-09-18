@@ -1,27 +1,32 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentSongs: [],
+  currentNaats: [],
   currentIndex: 0,
   isActive: false,
   isPlaying: false,
-  activeSong: {},
-  genreListId: '',
+  activeNaat: {},
+  genreListId: "",
 };
 
 const playerSlice = createSlice({
-  name: 'player',
+  name: "player",
   initialState,
   reducers: {
-    setActiveSong: (state, action) => {
-      state.activeSong = action.payload.song;
+    setActiveNaat: (state, action) => {
+      // console.log(action.payload?.data?.albumOfTrack);
+      // console.log(action.payload?.data?.artists);
+      // console.log(state.currentNaats);
+      // const Naat = naat?.data?.albumOfTrack;
 
-      if (action.payload?.data?.tracks?.hits) {
-        state.currentSongs = action.payload.data.tracks.hits;
-      } else if (action.payload?.data?.properties) {
-        state.currentSongs = action.payload?.data?.tracks;
+      state.activeNaat = action.payload.naat;
+
+      if (action.payload?.data?.albumOfTrack) {
+        state.currentNaats = action.payload.data.albumOfTrack;
+      } else if (action.payload?.data?.artists) {
+        state.currentNaats = action.payload?.data?.artists?.items;
       } else {
-        state.currentSongs = action.payload.data;
+        state.currentNaats = action.payload.data;
       }
 
       state.currentIndex = action.payload.i;
@@ -29,10 +34,10 @@ const playerSlice = createSlice({
     },
 
     nextSong: (state, action) => {
-      if (state.currentSongs[action.payload]?.track) {
-        state.activeSong = state.currentSongs[action.payload]?.track;
+      if (state.currentNaats[action.payload]?.track) {
+        state.activeNaat = state.currentNaats[action.payload]?.track;
       } else {
-        state.activeSong = state.currentSongs[action.payload];
+        state.activeNaat = state.currentNaats[action.payload];
       }
 
       state.currentIndex = action.payload;
@@ -40,10 +45,10 @@ const playerSlice = createSlice({
     },
 
     prevSong: (state, action) => {
-      if (state.currentSongs[action.payload]?.track) {
-        state.activeSong = state.currentSongs[action.payload]?.track;
+      if (state.currentNaats[action.payload]?.track) {
+        state.activeNaat = state.currentNaats[action.payload]?.track;
       } else {
-        state.activeSong = state.currentSongs[action.payload];
+        state.activeNaat = state.currentNaats[action.payload];
       }
 
       state.currentIndex = action.payload;
@@ -60,6 +65,12 @@ const playerSlice = createSlice({
   },
 });
 
-export const { setActiveSong, nextSong, prevSong, playPause, selectGenreListId } = playerSlice.actions;
+export const {
+  setActiveNaat,
+  nextSong,
+  prevSong,
+  playPause,
+  selectGenreListId,
+} = playerSlice.actions;
 
 export default playerSlice.reducer;
